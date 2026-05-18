@@ -1,0 +1,57 @@
+# IP CLAIM - Timestamped Declaration of Authorship
+# Date: 2026-05-18
+# Claimant: Darshani Persadh
+# ORCID: 0009-0007-5932-1262
+# Hugging Face: @persadian
+# GitHub: @arishma108
+# DOI: 10.57967/hf/8828
+
+================================================================================
+                                  IP CLAIM
+================================================================================
+
+I, Darshani Persadh, claim as my intellectual property the following original work:
+
+1. The IQ1_S-XL quantization of DeepSeek-V4-Flash, specifically:
+   - The application of IQ1_S-XL quantization to the 284B-parameter DeepSeek-V4-Flash model
+   - The two-shard GGUF file structure (50GB + 11.6GB = 61.6GB total)
+   - The public release and documentation under DOI 10.57967/hf/8828
+
+2. This claim extends to whatever can be claimed and has not been previously claimed
+   as intellectual property by another party.
+
+3. By publishing this work at the timestamp of this commit, I assert that all content
+   disclosed herein—if and to the extent it qualifies as previously unclaimed
+   intellectual property—is hereby claimed by me.
+
+4. The combined timestamp and contents of this disclosure serve as immutable,
+   cryptographic evidence of priority and authorship.
+
+================================================================================
+                           VERIFICATION METHOD
+================================================================================
+
+The SHA256 hashes of the exact model files are recorded in SHA256_SUMS.txt.
+These hashes serve as cryptographic fingerprints of the work claimed herein.
+
+To verify the integrity of the model files:
+
+    sha256sum -c SHA256_SUMS.txt
+
+The model is permanently archived at:
+    https://huggingface.co/persadian/DeepSeek-V4-Flash-GGUF
+
+The academic record is established via DOI:
+    https://doi.org/10.57967/hf/8828
+
+================================================================================
+                                SIGNATURE
+================================================================================
+
+Signed,
+
+Darshani Persadh
+ORCID: 0009-0007-5932-1262
+Date: 2026-05-18
+
+This claim is timestamped by GitHub commit history and immutable by design.

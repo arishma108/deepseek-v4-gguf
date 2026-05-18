@@ -1,0 +1,20 @@
+# SHA256 Checksums for DeepSeek-V4-Flash-IQ1_S-XL-GGUF
+# Generated: 2026-05-18
+# Author: Darshani Persadh (ORCID: 0009-0007-5932-1262)
+# Model: https://huggingface.co/persadian/DeepSeek-V4-Flash-GGUF
+# DOI: 10.57967/hf/8828
+
+# INSTRUCTIONS:
+# Go to https://huggingface.co/persadian/DeepSeek-V4-Flash-GGUF/tree/main
+# Click each .gguf file
+# Copy the SHA256 string from "Git LFS Details" section
+# Paste below, replacing PASTE_FROM_HF_HERE
+
+DeepSeek-V4-Flash-IQ1_S-XL-00001-of-00002.gguf: SHA256:3edd21794e285c6cdb1ea6cf030b724e5d91843d00762e9e2daf789a86d0d227
+DeepSeek-V4-Flash-IQ1_S-XL-00002-of-00002.gguf: SHA256:b15ce53183f61b8f29a9ccfd5b132a2577b3db82191cac49ebf3ca7e541495b5
+
+# To verify downloaded files:
+# sha256sum -c SHA256_SUMS.txt
+
+# Example of what a real hash looks like:
+# DeepSeek-V4-Flash-IQ1_S-XL-00001-of-00002.gguf: SHA256:a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234
