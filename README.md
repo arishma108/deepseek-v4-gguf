@@ -78,7 +78,8 @@ bibtex
   doi = {10.57967/hf/8828}
 }
 ```
-APA: Persadh, D. (2026). *IQ1_S-XL: A Quantized DeepSeek-V4-Flash for Consumer Hardware* (IQ1_S-XL) [Model]. Hugging Face. https://doi.org/10.57967/hf/8828
+### APA: 
+Persadh, D. (2026). *IQ1_S-XL: A Quantized DeepSeek-V4-Flash for Consumer Hardware* (IQ1_S-XL) [Model]. Hugging Face. https://doi.org/10.57967/hf/8828
 
 ## License
 MIT License - see LICENSE file
