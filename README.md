@@ -85,10 +85,10 @@ Persadh, D. (2026). *IQ1_S-XL: A Quantized DeepSeek-V4-Flash for Consumer Hardwa
 MIT License - see LICENSE file
 
 ### Acknowledgments
--- DeepSeek AI for the base model
--- llama.cpp community for GGUF format and V4 support
--- teamblobfish for the original IQ1_S-XL quantization work
--- Hugging Face for hosting infrastructure
+- DeepSeek AI for the base model
+- llama.cpp community for GGUF format and V4 support
+- teamblobfish for the original IQ1_S-XL quantization work
+- Hugging Face for hosting infrastructure
 
 ### Author 
 Darshani Persadh | ORCID: 0009-0007-5932-1262 | @persadian
