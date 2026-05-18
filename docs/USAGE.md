@@ -128,12 +128,9 @@ Fix: Reduce -ngl value or -c context size.
 Fix: Verify the model files with verify_shards.py script.
 
 ## Additional Resources
-[Hugging Face Model Page] (https://huggingface.co/persadian/DeepSeek-V4-Flash-GGUF)
-[arXiv Paper] (https://doi.org/10.57967/hf/8828)
-[llama.cpp Documentation] (https://github.com/ggerganov/llama.cpp)
-
-
-
+- [Hugging Face Model Page](https://huggingface.co/persadian/DeepSeek-V4-Flash-GGUF)
+- [arXiv Paper](https://doi.org/10.57967/hf/8828)
+- [llama.cpp Documentation](https://github.com/arishma108/llama.cpp)
 
 
 
