@@ -1,5 +1,5 @@
 # IP CLAIM - Timestamped Declaration of Authorship
-# Date: 2026-05-18
+# Date: 2026-05-17
 # Claimant: Darshani Persadh
 # ORCID: 0009-0007-5932-1262
 # Hugging Face: @persadian
@@ -52,6 +52,6 @@ Signed,
 
 Darshani Persadh
 ORCID: 0009-0007-5932-1262
-Date: 2026-05-18
+Date: 2026-05-17
 
 This claim is timestamped by GitHub commit history and immutable by design.
