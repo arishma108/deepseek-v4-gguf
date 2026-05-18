@@ -92,7 +92,8 @@ MIT License - see LICENSE file
 
 ### Author 
 Darshani Persadh | ORCID: 0009-0007-5932-1262 | @persadian
-**[DeepSeek-V4-Flash-GGUF](https://github.com/arishma108/deepseek-v4-gguf)** - My quantized model release (61.6GB, IQ1_S-XL)
+
+**[DeepSeek-V4-Flash-GGUF](https://github.com/arishma108/deepseek-v4-gguf)** - my quantized model release (61.6GB, IQ1_S-XL)
 
 ---
 
