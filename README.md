@@ -19,14 +19,14 @@
 | **DOI** | [10.57967/hf/8828](https://doi.org/10.57967/hf/8828) |
 | **License** | MIT |
 
-## Quick Start
+### Quick Start
 
 ```bash
 # Download from Hugging Face
 huggingface-cli download persadian/DeepSeek-V4-Flash-GGUF --local-dir ./model
 ```
 
-## Run with llama.cpp
+### Run with llama.cpp
 ```
 # Clone V4-aware fork
 git clone -b feat/v4-port-cuda https://github.com/arishma108/llama.cpp
@@ -38,7 +38,7 @@ make LLAMA_CUDA=1 -j
   -p "Explain quantum computing" -n 256 -ngl 35
 ```
 
-## Run Python (llama-cpp-python)
+### Run Python (llama-cpp-python)
 ```
 from llama_cpp import Llama
 
@@ -54,7 +54,7 @@ response = llm.create_chat_completion(
 )
 print(response["choices"][0]["message"]["content"])
 ```
-## Hardware Requirements
+### Hardware Requirements
 | Component   | Minimum Requirement | Recommended Configuration |
 | ----------- | ------------------- | ------------------------- |
 | RAM         | 64 GB               | 128 GB                    |
@@ -62,13 +62,13 @@ print(response["choices"][0]["message"]["content"])
 | Storage     | 150 GB              | 200 GB                    |
 | GPU Compute | CUDA 11.0+          | CUDA 12.0+                |
 
-## IP Claim & Provenance
+### IP Claim & Provenance
 ```
 This repository contains cryptographic proof of authorship:
 -- SHA256_SUMS.txt - Fingerprints of the exact model files
 -- IPCLAIM.txt - Timestamped claim of authorship (adapted from IPClaim model)
 ```
-## Citation
+### Citation
 ```
 bibtex
 @misc{persadh2026deepseek,
@@ -78,19 +78,20 @@ bibtex
   doi = {10.57967/hf/8828}
 }
 ```
-### APA: 
+### APA 
 Persadh, D. (2026). *IQ1_S-XL: A Quantized DeepSeek-V4-Flash for Consumer Hardware* (IQ1_S-XL) [Model]. Hugging Face. https://doi.org/10.57967/hf/8828
 
-## License
+### License
 MIT License - see LICENSE file
 
-## Acknowledgments
+### Acknowledgments
 -- DeepSeek AI for the base model
 -- llama.cpp community for GGUF format and V4 support
 -- teamblobfish for the original IQ1_S-XL quantization work
 -- Hugging Face for hosting infrastructure
 
-### Author: Darshani Persadh | ORCID: 0009-0007-5932-1262 | @persadian
+### Author 
+Darshani Persadh | ORCID: 0009-0007-5932-1262 | @persadian
 **[DeepSeek-V4-Flash-GGUF](https://github.com/arishma108/deepseek-v4-gguf)** - My quantized model release (61.6GB, IQ1_S-XL)
 
 ---
