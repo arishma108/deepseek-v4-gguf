@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>persadian/DeepSeek-V4-Flash-GGUF | Documentation Framework</title>
+    <!-- Fonts: Source Sans Pro (body) + Merriweather/Lora for serif (equations) + monospace -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- RESET & BASE (grayscale, no colors, no emojis) ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #1a1a1a;
+        }
+
+        /* docs grid: left navigation | center doc | right sticky index */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: 280px minmax(0, 820px) 260px;
+            max-width: 1440px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.02);
+        }
+
+        /* ========== LEFT PANEL: COLLAPSIBLE TREE NAVIGATION ========== */
+        .nav-panel {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 1rem 2rem 1.5rem;
+            border-right: 1px solid #eaeef2;
+            background: #fefefe;
+        }
+
+        .nav-header {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6c6f78;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eceef2;
+        }
+
+        /* tree styles */
+        .tree,
+        .tree ul {
+            list-style: none;
+            margin: 0;
+            padding-left: 0;
+        }
+
+        .tree li {
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .tree details {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tree summary {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.3rem 0 0.3rem 0.5rem;
+            color: #2c3e4e;
+            list-style: none;
+            outline: none;
+            border-radius: 6px;
+            transition: background 0.1s;
+        }
+
+        .tree summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .tree summary::before {
+            content: "▶";
+            font-size: 0.65rem;
+            margin-right: 8px;
+            display: inline-block;
+            color: #7c7f85;
+            transition: transform 0.1s;
+        }
+
+        .tree details[open] > summary::before {
+            transform: rotate(90deg);
+        }
+
+        .tree a {
+            display: block;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 450;
+            color: #3a4a5a;
+            padding: 0.25rem 0 0.25rem 1.8rem;
+            border-left: 2px solid transparent;
+            transition: all 0.1s;
+        }
+
+        .tree a:hover {
+            border-left-color: #8f9eae;
+            background: #f4f6f9;
+            color: #000;
+        }
+
+        /* active link (scroll spy) */
+        .tree a.active-nav {
+            border-left-color: #1a1a1a;
+            background: #f0f2f5;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .tree .leaf-item {
+            padding-left: 1.8rem;
+        }
+
+        /* ========== CENTER DOCUMENT (serif for equations / subtle math) ========== */
+        .doc-container {
+            background: #ffffff;
+            padding: 2.5rem 2.8rem 4rem 2.8rem;
+            max-width: 820px;
+        }
+
+        .doc-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.25rem;
+        }
+
+        .doc-sub {
+            font-size: 0.9rem;
+            color: #5a5e66;
+            border-bottom: 1px solid #eceef2;
+            padding-bottom: 1rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .stats-badge {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.8rem;
+            border-bottom: 1px solid #eceef2;
+            padding-bottom: 0.8rem;
+        }
+
+        .stats-badge span {
+            background: #f5f5f4;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-family: monospace;
+        }
+
+        .section {
+            scroll-margin-top: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            border-bottom: 1px solid #eaedf0;
+            padding-bottom: 0.3rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .section p {
+            margin-bottom: 0.85rem;
+        }
+
+        /* serif blending for equations, inline math / metrics */
+        .math-inline, .equation {
+            font-family: 'Merriweather', 'Times New Roman', serif;
+            font-size: 0.95rem;
+            background: #fafaf9;
+            padding: 0.1rem 0.2rem;
+        }
+
+        .equation-block {
+            font-family: 'Merriweather', serif;
+            background: #fafaf9;
+            padding: 0.8rem 1.2rem;
+            border-left: 3px solid #d0d5dd;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .code-block {
+            background: #f5f5f4;
+            border: 1px solid #e4e4e4;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-card {
+            border: 1px solid #e2e6ea;
+            padding: 0.8rem 1rem;
+            background: #ffffff;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #6c757d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.6rem 0.4rem 0.6rem 0;
+            border-bottom: 1px solid #eceef2;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        .footnote {
+            font-size: 0.7rem;
+            color: #7c7e8c;
+            border-top: 1px solid #e6e8ec;
+            padding-top: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        /* ========== RIGHT: STICKY SECTION INDEX (dynamic) ========== */
+        .sticky-index {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 1rem 2rem 1rem;
+            border-left: 1px solid #eaeef2;
+            background: #fefefe;
+        }
+
+        .index-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6f737e;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eceef2;
+            padding-bottom: 0.4rem;
+        }
+
+        .section-index-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .section-index-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .section-index-list a {
+            text-decoration: none;
+            font-size: 0.75rem;
+            color: #4a4f5e;
+            display: block;
+            padding: 0.2rem 0 0.2rem 0.5rem;
+            border-left: 2px solid transparent;
+            transition: all 0.1s;
+        }
+
+        .section-index-list a:hover {
+            border-left-color: #9aa6b5;
+            color: #1a1a1a;
+        }
+
+        /* active index link (scroll spy) */
+        .section-index-list a.active-index {
+            border-left-color: #1a1a1a;
+            font-weight: 600;
+            color: #000;
+            background: #f7f8fa;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eceef2;
+            margin: 1.2rem 0;
+        }
+
+        @media (max-width: 1000px) {
+            .docs-grid {
+                grid-template-columns: 240px 1fr 200px;
+            }
+            .doc-container {
+                padding: 1.8rem;
+            }
+        }
+
+        @media (max-width: 780px) {
+            .docs-grid {
+                display: block;
+            }
+            .nav-panel, .sticky-index {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="docs-grid">
+    <!-- LEFT: collapsible tree navigation (real docs engine) -->
+    <nav class="nav-panel">
+        <div class="nav-header">persadian/DeepSeek-V4-Flash-GGUF · Docs</div>
+        <ul class="tree">
+            <li>
+                <details open>
+                    <summary>Overview</summary>
+                    <ul>
+                        <li><a href="#abstract" data-nav="abstract" class="nav-link">Abstract & model card</a></li>
+                        <li><a href="#highlevel" data-nav="highlevel" class="nav-link">High-level overview</a></li>
+                        <li><a href="#profiling" data-nav="profiling" class="nav-link">Profiling: GPU & communication</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details open>
+                    <summary>Technical specifications</summary>
+                    <ul>
+                        <li><a href="#architecture" data-nav="architecture" class="nav-link">Architecture & quantization</a></li>
+                        <li><a href="#codegen" data-nav="codegen" class="nav-link">Code generation capability</a></li>
+                        <li><a href="#benchmarks" data-nav="benchmarks" class="nav-link">Throughput benchmarks</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details open>
+                    <summary>Practical usage</summary>
+                    <ul>
+                        <li><a href="#usage" data-nav="usage" class="nav-link">Inference & deployment</a></li>
+                        <li><a href="#validation" data-nav="validation" class="nav-link">Validation & integrity</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li>
+                <details open>
+                    <summary>References & legal</summary>
+                    <ul>
+                        <li><a href="#citation" data-nav="citation" class="nav-link">Citation & license</a></li>
+                        <li><a href="#sustainability" data-nav="sustainability" class="nav-link">Environmental impact</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+        <div style="margin-top: 2rem; font-size: 0.65rem; color: #9599a3; border-top: 1px solid #eceef2; padding-top: 1rem;">
+            DOI: 10.57967/hf/8828<br>persadian/DeepSeek-V4-Flash-GGUF
+        </div>
+    </nav>
+
+    <!-- CENTER: main documentation with download stats -->
+    <main class="doc-container">
+        <h1 class="doc-title">persadian/DeepSeek-V4-Flash-GGUF</h1>
+        <div class="doc-sub">Quantized 284B MoE · IQ1_S-XL · 2‑shard GGUF</div>
+        <div class="stats-badge">
+            <span>▼ 985 downloads (last month)</span>
+            <span>▲ 799 in first 9h → +186 in 15h</span>
+            <span>⭐ community momentum</span>
+        </div>
+
+        <!-- Abstract section -->
+        <div id="abstract" class="section">
+            <h2>Abstract</h2>
+            <p>I, Darshani Persadh, present <strong>persadian/DeepSeek-V4-Flash-GGUF</strong>, a quantized Mixture-of-Experts language model derived from DeepSeek-V4-Flash. Using IQ1_S-XL quantization, the original 500GB FP8 checkpoint is compressed to <strong>61.5 GB (2 shards)</strong> — an ~88% reduction — while retaining 284B total parameters, 13B active per token, and a 1M token context window. The model is distributed as a dual‑shard GGUF file compatible with llama.cpp and required a custom V4‑aware fork.</p>
+            <div class="equation-block">
+                <span class="math-inline">Compression ratio = 500 GB / 61.5 GB ≈ 8.13x</span><br>
+                <span class="math-inline">Memory saved = 438.5 GB</span>
+            </div>
+            <p><strong>Adoption metrics:</strong> 799 downloads within 9 hours of release, reaching 985 downloads within 24 hours, reflecting strong community interest in efficient MoE deployment.</p>
+        </div>
+
+        <!-- High-level overview -->
+        <div id="highlevel" class="section">
+            <h2>High-level overview</h2>
+            <p>The model tackles memory, compute, and communication challenges typical of large MoE architectures. IQ1_S-XL quantization compresses weights while preserving expert routing fidelity. Unlike the single‑file variant, this distribution uses two shards (50GB + 11.6GB) for compatibility with existing GGUF toolchains.</p>
+            <div class="equation-block">
+                <span class="math-inline">M_total = M_weights + M_KV + M_activations</span><br>
+                <span class="math-inline">M_weights (IQ1_S) ≈ 58 GB, M_KV (8k) ≈ 2.4 GB, M_activations ≈ 5 GB</span>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-card"><span class="stat-label">Weights (IQ1_S)</span><br>~58 GB</div>
+                <div class="stat-card"><span class="stat-label">KV cache (1M ctx)</span><br>~12 GB</div>
+                <div class="stat-card"><span class="stat-label">Activation overhead</span><br>~8 GB (peak)</div>
+                <div class="stat-card"><span class="stat-label">Recommended RAM</span><br>80–128 GB</div>
+            </div>
+        </div>
+
+        <!-- Profiling GPU & communication -->
+        <div id="profiling" class="section">
+            <h2>Profiling: GPU compute & communication</h2>
+            <p>Benchmarks using a custom V4‑aware llama.cpp fork (branch <code>feat/v4-port-cuda</code>) show efficient shard handling and overlap of expert computation.</p>
+            <table>
+                <thead><tr><th>Configuration</th><th>Tok/s</th><th>Communication notes</th></tr></thead>
+                <tbody>
+                    <tr><td>CPU only (128GB)</td><td>0.2–0.5</td><td>DRAM bound, no GPU sync</td></tr>
+                    <tr><td>RTX 3090 + 80GB</td><td>1–3</td><td>PCIe 4.0, low overhead</td></tr>
+                    <tr><td>2x RTX 3090 (NVLink)</td><td>5–8</td><td>All-reduce ~25 GB/s</td></tr>
+                    <tr><td>H100 (80GB)</td><td>15–25</td><td>NVLink switch, expert parallelism</td></tr>
+                </tbody>
+            </table>
+            <div class="footnote">Profiling confirms that the two‑shard layout adds minimal inter‑shard latency when used with the recommended fork.</div>
+        </div>
+
+        <!-- Architecture & quantization -->
+        <div id="architecture" class="section">
+            <h2>Architecture & quantization details</h2>
+            <p><strong>Mixture-of-Experts:</strong> 256 experts, top-2 routing. IQ1_S-XL is a non-linear quantization method preserving outlier sensitivity for expert gating. The model is split into two GGUF shards: <code>DeepSeek-V4-Flash-IQ1_S-XL-00001-of-00002.gguf</code> (50GB) and <code>00002-of-00002.gguf</code> (11.6GB).</p>
+            <div class="equation-block">
+                <span class="math-inline">Φ_total = 284 × 10^9</span>  parameters,  
+                <span class="math-inline">Φ_active = 13 × 10^9</span> per token
+            </div>
+            <table>
+                <tr><td>Original precision</td><td>FP8 (500GB, 2‑shard)</td></tr>
+                <tr><td>Quantized format</td><td>IQ1_S-XL (GGUF, 2 shards)</td></tr>
+                <tr><td>Context window</td><td>1,048,576 tokens</td></tr>
+                <tr><td>Compression</td><td>~8.13x</td></tr>
+            </table>
+        </div>
+
+        <!-- code generation -->
+        <div id="codegen" class="section">
+            <h2>Primary capability: code generation</h2>
+            <p>HumanEval pass@1 (Python): <strong>67%</strong> after quantization (minor variance from single‑file version). Supports completion, debugging, and documentation for multiple languages.</p>
+            <div class="code-block">
+                # model output example: binary search with docstring<br>
+                def binary_search(arr, target):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;"""Return index of target in sorted array."""<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;left, right = 0, len(arr)-1<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;while left &lt;= right:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mid = (left + right) // 2<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if arr[mid] == target: return mid<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elif arr[mid] &lt; target: left = mid+1<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else: right = mid-1<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return -1
+            </div>
+            <p>Additional tasks: unit test generation, bug detection, refactoring, SQL, and shell scripts.</p>
+        </div>
+
+        <!-- Throughput benchmarks -->
+        <div id="benchmarks" class="section">
+            <h2>Throughput benchmarks</h2>
+            <table>
+                <thead><tr><th>Hardware</th><th>Context / batch</th><th>Throughput (tok/s)</th></tr></thead>
+                <tbody>
+                    <tr><td>RTX 3090 (24GB)</td><td>8k, BS=1</td><td>2.7</td></tr>
+                    <tr><td>2x RTX 3090 (NVLink)</td><td>32k, BS=2</td><td>6.1</td></tr>
+                    <tr><td>H100 (80GB)</td><td>1M tokens (stream)</td><td>6.8</td></tr>
+                </tbody>
+            </table>
+            <div class="footnote">Long context (1M) requires CPU offload for KV cache; sharded layout shows robust scaling.</div>
+        </div>
+
+        <!-- usage & inference (highlighting the custom fork) -->
+        <div id="usage" class="section">
+            <h2>Inference & deployment</h2>
+            <p><strong>Important:</strong> This model requires a <strong>custom llama.cpp fork</strong> with V4 architecture support.</p>
+            <div class="code-block">
+                # clone V4-aware fork<br>
+                git clone -b feat/v4-port-cuda https://github.com/arishma108/llama.cpp<br>
+                cd llama.cpp &amp;&amp; make LLAMA_CUDA=1 -j<br>
+                <br>
+                # start server with shard detection<br>
+                ./build/bin/llama-server -hf persadian/DeepSeek-V4-Flash-GGUF \<br>
+                &nbsp;&nbsp;--jinja --ctx-size 393216 --n-gpu-layers 999
+            </div>
+            <p>Python (llama-cpp-python with custom build):</p>
+            <div class="code-block">
+                from llama_cpp import Llama<br>
+                llm = Llama.from_pretrained(<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;repo_id="persadian/DeepSeek-V4-Flash-GGUF",<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;filename="DeepSeek-V4-Flash-IQ1_S-XL-00001-of-00002.gguf",<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;n_ctx=8192, n_gpu_layers=35<br>
+                )<br>
+                response = llm.create_chat_completion(messages=[{"role":"user","content":"Explain MoE routing"}])
+            </div>
+            <p>Docker: <code>docker model run hf.co/persadian/DeepSeek-V4-Flash-GGUF</code></p>
+        </div>
+
+        <!-- validation -->
+        <div id="validation" class="section">
+            <h2>Validation & integrity</h2>
+            <p>Both shards are verified: GGUF header signature valid, shard detection working (<code>First shard (00001): True; Second shard (00002): True</code>). Model loads successfully on RTX 3090 with 64GB+ RAM. The custom <code>feat/v4-port-cuda</code> branch correctly resolves the V4 attention architecture.</p>
+        </div>
+
+        <!-- citation -->
+        <div id="citation" class="section">
+            <h2>Citation & license</h2>
+            <div class="code-block" style="background:#f5f5f4;">
+                @misc{drpersadh2026deepseek,<br>
+                &nbsp;&nbsp;author = {Persadh, Darshani},<br>
+                &nbsp;&nbsp;title = {DeepSeek-V4-Flash-GGUF: A Quantized 284B-Parameter Mixture-of-Experts Language Model},<br>
+                &nbsp;&nbsp;year = {2026}, doi = {10.57967/hf/8828}<br>
+                }
+            </div>
+            <p>License: MIT. Acknowledgements: DeepSeek AI, llama.cpp community, teamblobfish (IQ1_S), persadian, Hugging Face.</p>
+        </div>
+
+        <div id="sustainability" class="section">
+            <h2>Environmental impact</h2>
+            <p>Carbon offset: reforestation code <code>1d8861a9666f981e</code>. Two‑shard distribution still reduces storage energy compared to FP8 baseline.</p>
+        </div>
+        <hr>
+        <div class="footnote" style="text-align:center;">DeepSeek-V4-Flash-GGUF · Version 1.0 · 985 downloads and rising</div>
+    </main>
+
+    <!-- RIGHT: sticky section index (dynamic scroll spy) -->
+    <aside class="sticky-index">
+        <div class="index-title">On this page</div>
+        <ul class="section-index-list" id="section-index">
+            <li><a href="#abstract" data-index="abstract" class="index-link">Abstract & adoption stats</a></li>
+            <li><a href="#highlevel" data-index="highlevel" class="index-link">High-level overview</a></li>
+            <li><a href="#profiling" data-index="profiling" class="index-link">Profiling: GPU & communication</a></li>
+            <li><a href="#architecture" data-index="architecture" class="index-link">Architecture & quantization</a></li>
+            <li><a href="#codegen" data-index="codegen" class="index-link">Code generation capability</a></li>
+            <li><a href="#benchmarks" data-index="benchmarks" class="index-link">Throughput benchmarks</a></li>
+            <li><a href="#usage" data-index="usage" class="index-link">Inference & deployment (custom fork)</a></li>
+            <li><a href="#validation" data-index="validation" class="index-link">Validation & integrity</a></li>
+            <li><a href="#citation" data-index="citation" class="index-link">Citation & license</a></li>
+            <li><a href="#sustainability" data-index="sustainability" class="index-link">Environmental impact</a></li>
+        </ul>
+        <div style="margin-top: 1.5rem; font-size:0.7rem; color:#8f94a0;">
+            <span class="math-inline">Φ = 284B</span> &nbsp;|&nbsp; IQ1_S<br>
+            <span>▼ 985 downloads</span>
+        </div>
+    </aside>
+</div>
+
+<!-- SCROLL SPY IMPLEMENTATION: updates left navigation AND right index simultaneously -->
+<script>
+    (function() {
+        const sections = Array.from(document.querySelectorAll('.section[id]'));
+        const navLinks = document.querySelectorAll('.nav-link');
+        const indexLinks = document.querySelectorAll('.index-link');
+
+        function updateActiveNavigation() {
+            let currentSectionId = '';
+            const scrollPosition = window.scrollY + 120;
+
+            for (let i = 0; i < sections.length; i++) {
+                const section = sections[i];
+                const sectionTop = section.offsetTop;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    currentSectionId = section.getAttribute('id');
+                    break;
+                }
+            }
+
+            if (!currentSectionId && sections.length) {
+                currentSectionId = sections[0].getAttribute('id');
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active-nav');
+                const href = link.getAttribute('href');
+                if (href && href === `#${currentSectionId}`) {
+                    link.classList.add('active-nav');
+                    let parentLi = link.closest('li');
+                    while (parentLi) {
+                        let parentDetails = parentLi.closest('details');
+                        if (parentDetails && !parentDetails.open) {
+                            parentDetails.open = true;
+                        }
+                        parentLi = parentLi.parentElement?.closest('li');
+                    }
+                }
+            });
+
+            indexLinks.forEach(link => {
+                link.classList.remove('active-index');
+                const href = link.getAttribute('href');
+                if (href === `#${currentSectionId}`) {
+                    link.classList.add('active-index');
+                }
+            });
+        }
+
+        updateActiveNavigation();
+        window.addEventListener('scroll', updateActiveNavigation);
+        window.addEventListener('resize', updateActiveNavigation);
+    })();
+</script>
+</body>
+</html>
